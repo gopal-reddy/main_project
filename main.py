@@ -25,8 +25,8 @@ class getdata(StreamListener):
             tweets = ' '.join(re.sub('RT',' ', tweets).split())
             tweets = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweets).split())
             blob = TextBlob(tweets.strip())
-            trump_polarity="nc"
-            warren_polarity="nc"
+            trump_polarity=""
+            warren_polarity=""
             print("blob sentence")
             print()
             print(blob.sentences)
@@ -36,7 +36,7 @@ class getdata(StreamListener):
                 if "warren" in sent and "trump" not in sent:
                     print(sent)
                     warren_polarity = sent.sentiment.polarity
-                elif "trump" in sent and "warren" not in sent:
+                elif "warren" not in sent and "trump" in sent:
                     print(sent)
                     trump_polarity = sent.sentiment.polarity
             
@@ -53,7 +53,7 @@ class getdata(StreamListener):
             print(e)
         
     def on_error(self, status):
-        print(status)
+        print('error code')
 
 
 if __name__ == "__main__":
@@ -61,4 +61,4 @@ if __name__ == "__main__":
     auth = tweepy.OAuthHandler(credentials.api_key,credentials.api_secret_key)
     auth.set_access_token(credentials.access_token,credentials.access_token_secret)
     twitter_stream = Stream(auth, getdata())
-    twitter_stream.filter(track = ['warren', 'trump'])
+    twitter_stream.filter(track = ['Warren','trump'])
